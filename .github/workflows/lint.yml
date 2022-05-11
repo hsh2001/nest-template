@@ -1,0 +1,20 @@
+name: Check ESLint
+
+on: [push]
+jobs:
+  one:
+    runs-on: ubuntu-latest
+    if: ${{ !contains(github.event.head_commit.message, '[ci skip]') }}
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Init node env
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+      - name: npm install
+        run: npm ci
+      - name: Check ESLint
+        run: npm run lint
+        env:
+          CI: true
